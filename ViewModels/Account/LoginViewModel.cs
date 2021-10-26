@@ -4,6 +4,7 @@ namespace Texnicum.ViewModels.Account
 {
     public class LoginViewModel
     {
+        //Данные
         [Required(ErrorMessage = "Введите E-mail")]
         [Display(Name = "E-mail")]
         [DataType(DataType.EmailAddress)]
