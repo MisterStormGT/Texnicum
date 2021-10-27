@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EducateApp.Controllers
+namespace Texnicum.Controllers
 {
     public class UsersController : Controller
     {
