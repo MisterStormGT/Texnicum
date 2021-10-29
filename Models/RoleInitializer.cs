@@ -11,7 +11,7 @@ namespace Texnicum.Models
         public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             string adminEmail = "kolya.kolegov.94@mail.ru";
-            string password = "123456Тт_";
+            string password = "123456Nn";
 
             if (await roleManager.FindByNameAsync("admin") == null)
             {
