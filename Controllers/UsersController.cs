@@ -2,7 +2,6 @@
 using Texnicum.ViewModels.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +11,12 @@ namespace Texnicum.Controllers
     public class UsersController : Controller
     {
         UserManager<User> _userManager;
+        RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(UserManager<User> userManager)
+        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index() => View(_userManager.Users.ToList());
@@ -173,6 +174,47 @@ namespace Texnicum.Controllers
                 }
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> EditRoles(string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var allRoles = _roleManager.Roles.ToList();
+                ChangeRoleViewModel model = new ChangeRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserEmail = user.Email,
+                    UserRoles = userRoles,
+                    AllRoles = allRoles
+                };
+                return View(model);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRoles(string userId, List<string> roles)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var allRoles = _roleManager.Roles.ToList();
+                var addedRoles = roles.Except(userRoles);
+                var removedRoles = userRoles.Except(roles);
+
+                await _userManager.AddToRolesAsync(user, addedRoles);
+
+                await _userManager.RemoveFromRolesAsync(user, removedRoles);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return NotFound();
         }
     }
 }
