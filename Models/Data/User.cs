@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace Texnicum.Models.Data
+namespace Texnicum.Models
 {
     public class User : IdentityUser
     {
