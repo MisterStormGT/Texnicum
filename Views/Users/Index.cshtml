@@ -51,6 +51,9 @@
                 </td>
                 <td>
                     <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                        <a class="btn text-dark" asp-action="Edit" asp-route-id="@item.Id" title="Редактировать">
+                            <i class="fas fa-user-edit"></i>
+                        </a> |
                         <a class="btn text-dark" asp-action="ChangePassword" asp-route-id="@item.Id" title="Сменить пароль">
                             <i class="fas fa-key"></i>
                         </a> |

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Texnicum.Models.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Texnicum.Models
@@ -10,5 +11,7 @@ namespace Texnicum.Models
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<FormOfStudy> FormsOfStudy { get; set; }
     }
 }
