@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Texnicum.Models.Data;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Texnicum.Models
@@ -16,5 +18,11 @@ namespace Texnicum.Models
         [Required(ErrorMessage = "Введите отчество")]
         [Display(Name = "Отчество")]
         public string Patronymic { get; set; }
+
+
+
+
+        [Required]
+        public ICollection<FormOfStudy> FormsOfStudy { get; set; }
     }
 }

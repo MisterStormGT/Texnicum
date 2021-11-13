@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Texnicum.Models.Data
@@ -23,5 +24,8 @@ namespace Texnicum.Models.Data
         // свойство нужно для более правильного отображения данных в представлениях
         [ForeignKey("IdUser")]
         public User User { get; set; }
+
+        [Required]
+        public ICollection<Specialty> Specialties { get; set; }
     }
 }
