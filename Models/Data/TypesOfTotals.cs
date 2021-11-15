@@ -1,5 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Texnicum.Models.Data
 {
@@ -15,7 +19,8 @@ namespace Texnicum.Models.Data
         [Display(Name = "Название аттестации")]
         public string CertificateName { get; set; }
 
-        // так как у каждого пользователя (преподавателя) свой список форм обучения, то нужно указывать внешний ключ
+
+
         [Required]
         public string IdUser { get; set; }
 
