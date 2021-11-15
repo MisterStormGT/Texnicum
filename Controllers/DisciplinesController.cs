@@ -1,9 +1,9 @@
 ﻿using Texnicum.Models;
 using Texnicum.Models.Data;
+using Texnicum.ViewModels.Disciplines;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,47 +37,44 @@ namespace Texnicum.Controllers
             return View(await appCtx.ToListAsync());
         }
 
-        // GET: Disciplines/Details/5
-        public async Task<IActionResult> Details(short? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var disciplines = await _context.Disciplines
-                .Include(d => d.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (disciplines == null)
-            {
-                return NotFound();
-            }
-
-            return View(disciplines);
-        }
 
         // GET: Disciplines/Create
         public IActionResult Create()
         {
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
         // POST: Disciplines/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IndexProfModule,ProfModule,Index,Name,ShortName,IdUser")] Disciplines disciplines)
+        public async Task<IActionResult> Create(CreateDisciplinesViewModel model)
         {
+            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+            if (_context.Disciplines
+                .Where(f => f.IdUser == user.Id &&
+                    f.Name == model.Name).FirstOrDefault() != null)
+            {
+                ModelState.AddModelError("", "Введенный вид дисциплины уже существует");
+            }
+
             if (ModelState.IsValid)
             {
+                Disciplines disciplines = new()
+                {
+                    IndexProfModule = model.IndexProfModule,
+                    ProfModule = model.ProfModule,
+                    Index = model.Index,
+                    Name = model.Name,
+                    ShortName = model.ShortName,
+                    IdUser = user.Id
+                };
+
                 _context.Add(disciplines);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id", disciplines.IdUser);
-            return View(disciplines);
+            return View(model);
         }
 
         // GET: Disciplines/Edit/5
@@ -93,20 +90,41 @@ namespace Texnicum.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id", disciplines.IdUser);
-            return View(disciplines);
+
+            EditDisciplinesViewModel model = new()
+            {
+                Id = disciplines.Id,
+                IndexProfModule = disciplines.IndexProfModule,
+                ProfModule = disciplines.ProfModule,
+                Index = disciplines.Index,
+                Name = disciplines.Name,
+                ShortName = disciplines.ShortName,
+                IdUser = disciplines.IdUser
+            };
+
+
+            return View(model);
         }
 
         // POST: Disciplines/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("Id,IndexProfModule,ProfModule,Index,Name,ShortName,IdUser")] Disciplines disciplines)
+        public async Task<IActionResult> Edit(short id, EditDisciplinesViewModel model)
         {
+            Disciplines disciplines = await _context.Disciplines.FindAsync(id);
+
             if (id != disciplines.Id)
             {
                 return NotFound();
+            }
+
+            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+            if (_context.Disciplines
+                .Where(f => f.IdUser == user.Id &&
+                    f.Name == model.Name).FirstOrDefault() != null)
+            {
+                ModelState.AddModelError("", "Введенный вид дисциплины уже существует");
             }
 
             if (ModelState.IsValid)
@@ -129,9 +147,9 @@ namespace Texnicum.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id", disciplines.IdUser);
-            return View(disciplines);
+            return View(model);
         }
+
 
         // GET: Disciplines/Delete/5
         public async Task<IActionResult> Delete(short? id)
@@ -161,6 +179,25 @@ namespace Texnicum.Controllers
             _context.Disciplines.Remove(disciplines);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Disciplines/Details/5
+        public async Task<IActionResult> Details(short? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var disciplines = await _context.Disciplines
+                .Include(d => d.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (disciplines == null)
+            {
+                return NotFound();
+            }
+
+            return View(disciplines);
         }
 
         private bool DisciplinesExists(short id)

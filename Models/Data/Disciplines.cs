@@ -12,11 +12,11 @@ namespace Texnicum.Models.Data
         public short Id { get; set; }
 
         [Required(ErrorMessage = "Введите индекс профессионального модуля")]
-        [Display(Name = "Индекс профессионального модуля")]
+        [Display(Name = "Индекс проф модуля")]
         public string IndexProfModule { get; set; }
 
         [Required(ErrorMessage = "Введите название профессионального модуля")]
-        [Display(Name = "Название профессионального модуль")]
+        [Display(Name = "Название")]
         public string ProfModule { get; set; }
 
         [Display(Name = "Индекс")]
@@ -28,13 +28,12 @@ namespace Texnicum.Models.Data
         [Display(Name = "Краткое имя")]
         public string ShortName { get; set; }
 
-        // так как у каждого пользователя (преподавателя) свой список форм обучения, то нужно указывать внешний ключ
         [Required]
+        [Display(Name = "ИД пользователя")]
         public string IdUser { get; set; }
 
-        // Навигационные свойства
-        // свойство нужно для более правильного отображения данных в представлениях
         [ForeignKey("IdUser")]
+        [Display(Name = "Пользователь")]
         public User User { get; set; }
     }
 }

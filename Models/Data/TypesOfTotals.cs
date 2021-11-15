@@ -19,14 +19,11 @@ namespace Texnicum.Models.Data
         [Display(Name = "Название аттестации")]
         public string CertificateName { get; set; }
 
-
-
         [Required]
         public string IdUser { get; set; }
 
-        // Навигационные свойства
-        // свойство нужно для более правильного отображения данных в представлениях
         [ForeignKey("IdUser")]
+        [Display(Name = "Пользователь")]
         public User User { get; set; }
     }
 }

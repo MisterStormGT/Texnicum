@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Texnicum.Models;
+using Texnicum.Models.Data;
+using Texnicum.ViewModels.TypesOfTotals;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Texnicum.Models;
-using Texnicum.Models.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Texnicum.Controllers
 {
@@ -40,47 +38,39 @@ namespace Texnicum.Controllers
             return View(await appCtx.ToListAsync());
         }
 
-        // GET: TypesOfTotals/Details/5
-        public async Task<IActionResult> Details(short? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var typeOfTotal = await _context.TypesOfTotals
-                .Include(t => t.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (typeOfTotal == null)
-            {
-                return NotFound();
-            }
-
-            return View(typeOfTotal);
-        }
-
         // GET: TypesOfTotals/Create
         public IActionResult Create()
         {
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
         // POST: TypesOfTotals/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CertificateName,IdUser")] TypesOfTotals typeOfTotal)
+        public async Task<IActionResult> Create(CreateTypeOfTotalViewModel model)
         {
+            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+            if (_context.TypesOfTotals
+                .Where(f => f.IdUser == user.Id &&
+                    f.CertificateName == model.CertificateName).FirstOrDefault() != null)
+            {
+                ModelState.AddModelError("", "Введенный вид промежуточной аттестации уже существует");
+            }
+
             if (ModelState.IsValid)
             {
+                TypesOfTotals typeOfTotal = new()
+                {
+                    CertificateName = model.CertificateName,
+                    IdUser = user.Id
+                };
+
                 _context.Add(typeOfTotal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id", typeOfTotal.IdUser);
-            return View(typeOfTotal);
+            return View(model);
         }
 
         // GET: TypesOfTotals/Edit/5
@@ -96,26 +86,42 @@ namespace Texnicum.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id", typeOfTotal.IdUser);
-            return View(typeOfTotal);
+
+            EditTypeOfTotalViewModel model = new()
+            {
+                Id = typeOfTotal.Id,
+                CertificateName = typeOfTotal.CertificateName,
+                IdUser = typeOfTotal.IdUser
+            };
+
+            return View(model);
         }
 
         // POST: TypesOfTotals/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("Id,CertificateName,IdUser")] TypesOfTotals typeOfTotal)
+        public async Task<IActionResult> Edit(short id, EditTypeOfTotalViewModel model)
         {
+            TypesOfTotals typeOfTotal = await _context.TypesOfTotals.FindAsync(id);
+
             if (id != typeOfTotal.Id)
             {
                 return NotFound();
+            }
+
+            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+            if (_context.TypesOfTotals
+               .Where(f => f.IdUser == user.Id &&
+                   f.CertificateName == model.CertificateName).FirstOrDefault() != null)
+            {
+                ModelState.AddModelError("", "Введенный вид промежуточной аттестации уже существует");
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    typeOfTotal.CertificateName = model.CertificateName;
                     _context.Update(typeOfTotal);
                     await _context.SaveChangesAsync();
                 }
@@ -132,8 +138,7 @@ namespace Texnicum.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdUser"] = new SelectList(_context.Users, "Id", "Id", typeOfTotal.IdUser);
-            return View(typeOfTotal);
+            return View(model);
         }
 
         // GET: TypesOfTotals/Delete/5
@@ -164,6 +169,25 @@ namespace Texnicum.Controllers
             _context.TypesOfTotals.Remove(typeOfTotal);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: TypesOfTotals/Details/5
+        public async Task<IActionResult> Details(short? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var typeOfTotal = await _context.TypesOfTotals
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (typeOfTotal == null)
+            {
+                return NotFound();
+            }
+
+            return View(typeOfTotal);
         }
 
         private bool TypeOfTotalExists(short id)
