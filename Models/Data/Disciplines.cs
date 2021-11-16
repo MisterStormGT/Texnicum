@@ -11,11 +11,9 @@ namespace Texnicum.Models.Data
         [Display(Name = "ИД")]
         public short Id { get; set; }
 
-        [Required(ErrorMessage = "Введите индекс профессионального модуля")]
         [Display(Name = "Индекс проф модуля")]
         public string IndexProfModule { get; set; }
 
-        [Required(ErrorMessage = "Введите название профессионального модуля")]
         [Display(Name = "Название")]
         public string ProfModule { get; set; }
 

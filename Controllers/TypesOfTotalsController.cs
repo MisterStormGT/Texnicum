@@ -110,6 +110,7 @@ namespace Texnicum.Controllers
             }
 
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
             if (_context.TypesOfTotals
                .Where(f => f.IdUser == user.Id &&
                    f.CertificateName == model.CertificateName).FirstOrDefault() != null)

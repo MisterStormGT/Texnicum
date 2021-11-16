@@ -118,6 +118,8 @@ namespace Texnicum.Controllers
                 return NotFound();
             }
 
+
+
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
 
             if (_context.Disciplines
@@ -131,6 +133,11 @@ namespace Texnicum.Controllers
             {
                 try
                 {
+                    disciplines.IndexProfModule = model.IndexProfModule;
+                    disciplines.ProfModule = model.ProfModule;
+                    disciplines.Index = model.Index;
+                    disciplines.Name = model.Name;
+                    disciplines.ShortName = model.ShortName;
                     _context.Update(disciplines);
                     await _context.SaveChangesAsync();
                 }
