@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Texnicum.Models.Data
 {
-    public class TypesOfTotals
+    public class TypeOfTotal
     {
         // Key - поле первичный ключ
         // DatabaseGenerated(DatabaseGeneratedOption.Identity) - поле автоинкреметное

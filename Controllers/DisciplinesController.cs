@@ -47,7 +47,7 @@ namespace Texnicum.Controllers
         // POST: Disciplines/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateDisciplinesViewModel model)
+        public async Task<IActionResult> Create(CreateDisciplineViewModel model)
         {
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
 
@@ -60,7 +60,7 @@ namespace Texnicum.Controllers
 
             if (ModelState.IsValid)
             {
-                Disciplines disciplines = new()
+                Discipline disciplines = new()
                 {
                     IndexProfModule = model.IndexProfModule,
                     ProfModule = model.ProfModule,
@@ -91,7 +91,7 @@ namespace Texnicum.Controllers
                 return NotFound();
             }
 
-            EditDisciplinesViewModel model = new()
+            EditDisciplineViewModel model = new()
             {
                 Id = disciplines.Id,
                 IndexProfModule = disciplines.IndexProfModule,
@@ -109,9 +109,9 @@ namespace Texnicum.Controllers
         // POST: Disciplines/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, EditDisciplinesViewModel model)
+        public async Task<IActionResult> Edit(short id, EditDisciplineViewModel model)
         {
-            Disciplines disciplines = await _context.Disciplines.FindAsync(id);
+            Discipline disciplines = await _context.Disciplines.FindAsync(id);
 
             if (id != disciplines.Id)
             {

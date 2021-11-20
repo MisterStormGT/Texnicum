@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Texnicum.Models.Data
 {
-    public class Disciplines
+    public class Discipline
     {
         // Key - поле первичный ключ
         // DatabaseGenerated(DatabaseGeneratedOption.Identity) - поле автоинкреметное

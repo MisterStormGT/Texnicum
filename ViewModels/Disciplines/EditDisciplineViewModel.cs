@@ -2,7 +2,7 @@
 
 namespace Texnicum.ViewModels.Disciplines
 {
-    public class EditDisciplinesViewModel
+    public class EditDisciplineViewModel
     {
         public short Id { get; set; }
 

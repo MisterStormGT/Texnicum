@@ -60,7 +60,7 @@ namespace Texnicum.Controllers
 
             if (ModelState.IsValid)
             {
-                TypesOfTotals typeOfTotal = new()
+                TypeOfTotal typeOfTotal = new()
                 {
                     CertificateName = model.CertificateName,
                     IdUser = user.Id
@@ -102,7 +102,7 @@ namespace Texnicum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(short id, EditTypeOfTotalViewModel model)
         {
-            TypesOfTotals typeOfTotal = await _context.TypesOfTotals.FindAsync(id);
+            TypeOfTotal typeOfTotal = await _context.TypesOfTotals.FindAsync(id);
 
             if (id != typeOfTotal.Id)
             {

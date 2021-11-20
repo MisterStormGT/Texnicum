@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texnicum.ViewModels.Disciplines
 {
-    public class CreateDisciplinesViewModel
+    public class CreateDisciplineViewModel
     {
         [Required(ErrorMessage = "Введите индекс профессионального модуля")]
         [Display(Name = "Индекс профессионального модуля")]
