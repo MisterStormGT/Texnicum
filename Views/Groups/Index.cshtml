@@ -1,21 +1,20 @@
-﻿@model IEnumerable<Texnicum.Models.Data.Discipline>
+﻿@model IEnumerable<Texnicum.Models.Data.Group>
 
 @{
-    ViewData["Title"] = "Дисциплины";
+    ViewData["Title"] = "Группы";
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Главная</a></li>
-        <li class="breadcrumb-item active">Дисциплины</li>
+        <li class="breadcrumb-item active">Группы</li>
     </ol>
 </nav>
-
-<h2>Дисциплины</h2>
+<h2>Группы</h2>
 
 <h6>
     <a class="btn text-dark" asp-action="Create">
-        <i class="far fa-plus-square"></i>  Добавить дисциплину
+        <i class="far fa-plus-square"></i>  Добавить группу
     </a>
 </h6>
 <div class="table-responsive">
@@ -23,19 +22,25 @@
         <thead class="thead-light">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.IndexProfModule)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProfModule)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Index)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ShortName)
+                    @Html.DisplayNameFor(model => model.CountOfStudents)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearOfAdmission)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearOfIssue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClassTeacher)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContactsTeacher)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Specialty)
                 </th>
                 <th></th>
             </tr>
@@ -45,19 +50,25 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IndexProfModule)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProfModule)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Index)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ShortName)
+                        @Html.DisplayFor(modelItem => item.CountOfStudents)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.YearOfAdmission)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.YearOfIssue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassTeacher)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactsTeacher)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialty.Code)
                     </td>
                     <td>
                         <a class="btn text-dark" asp-action="Details" asp-route-id="@item.Id" title="Посмотреть подробнее">
@@ -74,4 +85,4 @@
             }
         </tbody>
     </table>
-    </div>
+</div>

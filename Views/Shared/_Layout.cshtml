@@ -42,7 +42,7 @@
                                 </a>
                             </li>
                         }
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" style="cursor:pointer;">
                             <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown">
                                 <i class="fas fa-chalkboard-teacher"></i>  Информация об обучении
                             </a>
@@ -51,11 +51,12 @@
                                 <a class="dropdown-item text-dark" asp-controller="TypesOfTotals" asp-action="Index">Виды аттестации</a>
                                 <a class="dropdown-item text-dark" asp-controller="Disciplines" asp-action="Index">Дисциплины</a>
                                 <a class="dropdown-item text-dark" asp-controller="Specialties" asp-action="Index">Специальности</a>
+                                <a class="dropdown-item text-dark" asp-controller="Groups" asp-action="Index">Группы</a>
                             </div>
                         </li>
                     </ul>
 
-                            <ul class="navbar-nav flex-grow">
+                            <ul class="navbar-nav flex-grow" style="cursor:pointer;">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown">
                                         <i class="far fa-user-circle"></i>  @User.Identity.Name

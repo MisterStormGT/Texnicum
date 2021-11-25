@@ -17,37 +17,39 @@
         <i class="far fa-plus-square"></i>  Добавить вид промежуточной аттестации
     </a>
 </h6>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CertificateName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-bordered text-nowrap table-sm">
+        <thead class="thead-light">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CertificateName)
-                </td>
-                <td>
-                    <a class="btn text-dark" asp-action="Details" asp-route-id="@item.Id" title="Посмотреть подробнее">
-                        <i class="far fa-eye"></i>
-                    </a> |
-                    <a class="btn text-dark" asp-action="Edit" asp-route-id="@item.Id" title="Редактировать">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a> |
-                    <a class="btn text-dark" asp-action="Delete" asp-route-id="@item.Id" title="Удалить">
-                        <i class="far fa-minus-square"></i>
-                    </a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.CertificateName)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-© 2021 GitHub, Inc.
-Terms
-Privacy
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CertificateName)
+                    </td>
+                    <td>
+                        <a class="btn text-dark" asp-action="Details" asp-route-id="@item.Id" title="Посмотреть подробнее">
+                            <i class="far fa-eye"></i>
+                        </a> |
+                        <a class="btn text-dark" asp-action="Edit" asp-route-id="@item.Id" title="Редактировать">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a> |
+                        <a class="btn text-dark" asp-action="Delete" asp-route-id="@item.Id" title="Удалить">
+                            <i class="far fa-minus-square"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    © 2021 GitHub, Inc.
+    Terms
+    Privacy

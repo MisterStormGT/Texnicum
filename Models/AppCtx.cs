@@ -16,5 +16,6 @@ namespace Texnicum.Models
         public DbSet<Specialty> Specialties { get; set; }
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<TypeOfTotal> TypesOfTotals { get; set; }
+        public DbSet<Group> Groups { get; set; }
     }
 }

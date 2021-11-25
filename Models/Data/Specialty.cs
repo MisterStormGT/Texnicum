@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace Texnicum.Models.Data
 {
@@ -26,5 +27,8 @@ namespace Texnicum.Models.Data
         [Display(Name = "Форма обучения")]
         [ForeignKey("IdFormOfStudy")]
         public FormOfStudy FormOfStudy { get; set; }
+
+
+        public ICollection<Group> Groups { get; set; }
     }
 }
