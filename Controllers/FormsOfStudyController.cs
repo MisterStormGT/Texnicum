@@ -109,6 +109,14 @@ namespace Texnicum.Controllers
                 return NotFound();
             }
 
+            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+            if (_context.FormsOfStudy
+                .Where(f => f.IdUser == user.Id &&
+                    f.FormOfEdu == model.FormOfEdu).FirstOrDefault() != null)
+            {
+                ModelState.AddModelError("", "Введеная форма обучения уже существует");
+            }
 
             if (ModelState.IsValid)
             {

@@ -38,6 +38,7 @@ namespace Texnicum.Controllers
         // GET: Specialties/Create
         public async Task<IActionResult> CreateAsync()
         {
+            // находим информацию о пользователе, который вошел в систему по его имени
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
 
             // при отображении страницы заполняем элемент "выпадающий список" формами обучения
@@ -53,6 +54,7 @@ namespace Texnicum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateSpecialtyViewModel model)
         {
+
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
 
             if (_context.Specialties
@@ -89,6 +91,7 @@ namespace Texnicum.Controllers
             ViewData["IdFormOfStudy"] = new SelectList(
                 _context.FormsOfStudy.Where(w => w.IdUser == user.Id),
                 "Id", "FormOfEdu", model.IdFormOfStudy);
+
             return View(model);
         }
 
@@ -135,6 +138,20 @@ namespace Texnicum.Controllers
                 return NotFound();
             }
 
+            // находим информацию о пользователе, который вошел в систему по его имени
+            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+            if (_context.Specialties
+             .Where(f => f.FormOfStudy.IdUser == user.Id &&
+                 f.Code == model.Code &&
+                 f.Name == model.Name &&
+                 f.IdFormOfStudy == model.IdFormOfStudy)
+             .FirstOrDefault() != null)
+            {
+                ModelState.AddModelError("", "Введеная специальность уже существует");
+            }
+
+
             if (ModelState.IsValid)
             {
                 try
@@ -158,7 +175,7 @@ namespace Texnicum.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
 
             ViewData["IdFormOfStudy"] = new SelectList(
                 _context.FormsOfStudy.Where(w => w.IdUser == user.Id),
