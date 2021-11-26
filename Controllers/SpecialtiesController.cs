@@ -83,6 +83,9 @@ namespace Texnicum.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // в списке в качестве текущего элемента устанавливаем значение из базы данных,
+            // указываем параметр model.IdFormOfStudy
+
             ViewData["IdFormOfStudy"] = new SelectList(
                 _context.FormsOfStudy.Where(w => w.IdUser == user.Id),
                 "Id", "FormOfEdu", model.IdFormOfStudy);
