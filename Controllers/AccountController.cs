@@ -55,7 +55,7 @@ namespace Texnicum.Controllers
                         protocol: HttpContext.Request.Scheme);
                     EmailService emailService = new EmailService();
                     await emailService.SendEmailAsync(model.Email, "Confirm your account",
-                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+                        $"Подтвердите регистрацию, перейдя по <a href='{callbackUrl}'>ссылке</a>");
 
                     return View("RegisterConfirmation");
                 }
