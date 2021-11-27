@@ -25,17 +25,25 @@ namespace Texnicum.Controllers
         }
 
         // GET: TypesOfTotals
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(TypeOfTotalSortState sortOrder = TypeOfTotalSortState.CertificateNameAsc)
         {
             // находим информацию о пользователе, который вошел в систему по его имени
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
 
-            var appCtx = _context.TypesOfTotals
+            var typeOfTotal = _context.TypesOfTotals
                 .Include(i => i.User)
-                .Where(w => w.IdUser == user.Id)
-                .OrderBy(o => o.CertificateName);
+                .Where(w => w.IdUser == user.Id);
 
-            return View(await appCtx.ToListAsync());
+            ViewData["TypeOfEduSort"] = sortOrder == TypeOfTotalSortState.CertificateNameAsc ? TypeOfTotalSortState.CertificateNameDesc : TypeOfTotalSortState.CertificateNameAsc;
+
+            typeOfTotal = sortOrder switch
+            {
+                TypeOfTotalSortState.CertificateNameDesc => typeOfTotal.OrderByDescending(s => s.CertificateName),
+                _ => typeOfTotal.OrderBy(s => s.CertificateName),
+            };
+
+
+            return View(await typeOfTotal.AsNoTracking().ToListAsync());
         }
 
         // GET: TypesOfTotals/Create

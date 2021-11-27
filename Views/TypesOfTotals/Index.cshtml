@@ -27,7 +27,9 @@
         <thead class="thead-light">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.CertificateName)
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.TypeOfEduSort">
+                        @Html.DisplayNameFor(model => model.CertificateName)
+                    </a>
                 </th>
                 <th></th>
             </tr>
