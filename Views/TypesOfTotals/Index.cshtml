@@ -12,6 +12,11 @@
 </nav>
 <h2>Виды промежуточной аттестации</h2>
 
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+
 <h6>
     <a class="btn text-dark" asp-action="Create">
         <i class="far fa-plus-square"></i>  Добавить вид промежуточной аттестации
@@ -35,7 +40,7 @@
                         @Html.DisplayFor(modelItem => item.CertificateName)
                     </td>
                     <td>
-                        <a class="btn text-dark" asp-action="Details" asp-route-id="@item.Id" title="Посмотреть подробнее">
+                        <a class="btn text-dark" asp-action="Details" asp-route-id="@item.Id" title="Посмотреть подробнее" id="details">
                             <i class="far fa-eye"></i>
                         </a> |
                         <a class="btn text-dark" asp-action="Edit" asp-route-id="@item.Id" title="Редактировать">
@@ -49,7 +54,19 @@
             }
         </tbody>
     </table>
-    </div>
-    © 2021 GitHub, Inc.
-    Terms
-    Privacy
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $("#details").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+}

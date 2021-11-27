@@ -1,13 +1,16 @@
-﻿using Texnicum.Models;
+﻿using ClosedXML.Excel;
+using Texnicum.Models;
 using Texnicum.Models.Data;
 using Texnicum.ViewModels.Disciplines;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace Texnicum.Controllers
 {
     [Authorize(Roles = "admin, registeredUser")]
@@ -204,7 +207,93 @@ namespace Texnicum.Controllers
                 return NotFound();
             }
 
-            return View(disciplines);
+            return PartialView(disciplines);
+        }
+
+
+        public async Task<FileResult> DownloadPattern()
+        {
+            IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+            // выбираем из базы данных все специальности текущего пользователя
+                var appCtx = _context.Disciplines
+                .Include(d => d.User)
+                .Where(w => w.IdUser == user.Id)
+                .OrderBy(o => o.Name);
+
+            int i = 1;      // счетчик
+
+            IXLRange rngBorder;     // объект для работы с диапазонами в Excel (выделение групп ячеек)
+
+            // создание книги Excel
+            using (XLWorkbook workbook = new(XLEventTracking.Disabled))
+            {
+                // для каждой специальности 
+                foreach (Discipline discipline in appCtx)
+                {
+                    // добавить лист в книгу Excel
+                    // с названием 3 символа формы обучения и кода специальности
+                    IXLWorksheet worksheet = workbook.Worksheets
+                        .Add($"{discipline.IndexProfModule}");
+
+
+                    // в первой строке текущего листа указываем: 
+                    // в ячейку A1 значение "Индекс проф модуля"
+                    worksheet.Cell("A" + i).Value = "Индекс проф модуля";
+                    // в ячейку B1 значение - индекс
+                    worksheet.Cell("B" + i).Value = discipline.IndexProfModule;
+                    // увеличение счетчика на единицу
+                    i++;
+
+                    // во второй строке
+                    worksheet.Cell("A" + i).Value = "Название";
+                    worksheet.Cell("B" + i).Value = $"'{discipline.ProfModule}";
+                    i++;
+
+                    // в третей строке
+                    worksheet.Cell("A" + i).Value = "Индекс";
+                    worksheet.Cell("B" + i).Value = discipline.Index;
+
+                    // делаем отступ на одну строку и пишем в пятой строке
+                    i += 3;
+                    // заголовки у столбцов
+                    worksheet.Cell("A" + i).Value = "Индекс проф модуля";
+                    worksheet.Cell("A" + 7).Value = discipline.IndexProfModule;
+                    worksheet.Cell("B" + i).Value = "Название";
+                    worksheet.Cell("B" + 7).Value = discipline.ProfModule;
+                    worksheet.Cell("C" + i).Value = "Индекс";
+                    worksheet.Cell("C" + 7).Value = discipline.Index;
+                    worksheet.Cell("D" + i).Value = "Имя";
+                    worksheet.Cell("D" + 7).Value = discipline.Name;
+                    worksheet.Cell("E" + i).Value = "Краткое имя";
+                    worksheet.Cell("E" + 7).Value = discipline.ShortName;
+
+                    // устанавливаем внешние границы для диапазона A4:F4
+                    rngBorder = worksheet.Range("A6:E6");       // создание диапазона (выделения ячеек)
+                    rngBorder.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;       // для диапазона задаем внешнюю границу
+
+                    // на листе для столбцов задаем значение ширины по содержимому
+                    worksheet.Columns().AdjustToContents();
+
+                    // счетчик "обнуляем"
+                    i = 1;
+                }
+
+                // создаем стрим
+                using (MemoryStream stream = new())
+                {
+                    // помещаем в стрим созданную книгу
+                    workbook.SaveAs(stream);
+                    stream.Flush();
+
+                    // возвращаем файл определенного типа
+                    return new FileContentResult(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    {
+                        FileDownloadName = $"disciplines_{DateTime.UtcNow.ToShortDateString()}.xlsx"     //в названии файла указываем таблицу и текущую дату
+                    };
+                }
+            }
         }
 
         private bool DisciplinesExists(short id)
