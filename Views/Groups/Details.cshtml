@@ -1,65 +1,62 @@
 ﻿@model Texnicum.Models.Data.Group
 
-@{
-    ViewData["Title"] = "Группы";
-}
-
-<h3>
-    <a class="btn text-dark" asp-action="Index" title="Вернуться к списку">
-        <i class="fas fa-arrow-left"></i>
-    </a>
-    Просмотр группы
-</h3>
-
-<div>
-    <dl class="row">
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.CountOfStudents)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.CountOfStudents)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.YearOfAdmission)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.YearOfAdmission)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.YearOfIssue)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.YearOfIssue)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.ClassTeacher)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.ClassTeacher)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.ContactsTeacher)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.ContactsTeacher)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Specialty)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Specialty.Code)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Specialty.FormOfStudy)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Specialty.FormOfStudy.FormOfEdu)
-        </dd>
-    </dl>
-</div> 
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">Просмотр группы</h4>
+        <button type="button" class="close" data-dismiss="modal">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="modal-body">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CountOfStudents)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CountOfStudents)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.YearOfAdmission)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.YearOfAdmission)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.YearOfIssue)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.YearOfIssue)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassTeacher)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ClassTeacher)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ContactsTeacher)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ContactsTeacher)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Specialty)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Specialty.Code)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Specialty.FormOfStudy)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Specialty.FormOfStudy.FormOfEdu)
+            </dd>
+        </dl>
+    </div>
+</div>

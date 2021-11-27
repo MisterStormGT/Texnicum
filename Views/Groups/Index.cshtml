@@ -12,6 +12,10 @@
 </nav>
 <h2>Группы</h2>
 
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
 <div class="d-flex justify-content-between">
     <div class="p-2">
         <ul class="nav">
@@ -83,7 +87,7 @@
                         @Html.DisplayFor(modelItem => item.Specialty.Code)
                     </td>
                     <td>
-                        <a class="btn text-dark" asp-action="Details" asp-route-id="@item.Id" title="Посмотреть подробнее">
+                        <a class="btn text-dark" asp-action="Details" asp-route-id="@item.Id" title="Посмотреть подробнее" id="details">
                             <i class="far fa-eye"></i>
                         </a> |
                         <a class="btn text-dark" asp-action="Edit" asp-route-id="@item.Id" title="Редактировать">
@@ -98,3 +102,19 @@
         </tbody>
     </table>
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+           $.ajaxSetup({ cache: false });
+            $("#details").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+}
