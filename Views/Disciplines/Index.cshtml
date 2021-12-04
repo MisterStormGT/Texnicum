@@ -32,6 +32,7 @@
             </li>
         </ul>
     </div>
+</div>
     <div class="p-2">
         <form class="form-inline" asp-action="Index" method="get">
             <div class="form-actions no-color">
@@ -43,12 +44,11 @@
                     <input type="text" name="ShortName" placeholder="Краткое имя" value="@Model.FilterDisciplineViewModel.SelectedShortName" class="form-control" />
 
                     <input type="submit" value="Поиск" class="btn btn-outline-success" /> |
-                    <a class="=btn text-dark" asp-action="Index"><i class="fas fa-eraser"></i></a>
+                    <a class="=btn text-dark" asp-action="Index"><i class="fas fa-eraser" title="очистить поиск"></i></a>
                 </p>
             </div>
         </form>
     </div>
-</div>
 
 <div class="table-responsive">
     <table class="table table-bordered text-nowrap table-sm">

@@ -37,7 +37,7 @@ namespace Texnicum.Controllers
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
 
 
-            int pageSize = 15;
+            int pageSize = 4;
             IQueryable<Discipline> disciplines = _context.Disciplines
                 .Include(d => d.User)
                 .Where(w => w.IdUser == user.Id);
@@ -131,7 +131,11 @@ namespace Texnicum.Controllers
 
             if (_context.Disciplines
                 .Where(f => f.IdUser == user.Id &&
-                    f.Name == model.Name).FirstOrDefault() != null)
+                    f.IndexProfModule == model.IndexProfModule &&
+                    f.ProfModule == model.ProfModule &&
+                    f.Index == model.Index &&
+                    f.Name == model.Name &&
+                    f.ShortName == model.ShortName).FirstOrDefault() != null)
             {
                 ModelState.AddModelError("", "Введенный вид дисциплины уже существует");
             }
@@ -202,7 +206,11 @@ namespace Texnicum.Controllers
 
             if (_context.Disciplines
                 .Where(f => f.IdUser == user.Id &&
-                    f.Name == model.Name).FirstOrDefault() != null)
+                    f.IndexProfModule == model.IndexProfModule &&
+                    f.ProfModule == model.ProfModule &&
+                    f.Index == model.Index &&
+                    f.Name == model.Name &&
+                    f.ShortName == model.ShortName).FirstOrDefault() != null)
             {
                 ModelState.AddModelError("", "Введенный вид дисциплины уже существует");
             }
@@ -309,7 +317,7 @@ namespace Texnicum.Controllers
                     // добавить лист в книгу Excel
                     // с названием 3 символа формы обучения и кода специальности
                     IXLWorksheet worksheet = workbook.Worksheets
-                        .Add($"{discipline.IndexProfModule}");
+                        .Add($"{discipline.Index}");
 
 
                     // в первой строке текущего листа указываем: 
