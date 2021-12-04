@@ -31,7 +31,7 @@ namespace Texnicum.Controllers
         // GET: Disciplines
           public async Task<IActionResult> Index(string IndexProfModule, string ProfModule, string Index, string name, string ShortName,
             int page = 1,
-           DisciplineSortState sortOrder = DisciplineSortState.IndexProfModuleAsc)
+            DisciplineSortState sortOrder = DisciplineSortState.IndexProfModuleAsc)
         {
             // находим информацию о пользователе, который вошел в систему по его имени
             IdentityUser user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
